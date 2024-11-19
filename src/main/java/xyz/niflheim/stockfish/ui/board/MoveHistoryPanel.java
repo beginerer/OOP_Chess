@@ -30,18 +30,18 @@ public class MoveHistoryPanel extends JPanel {
         moveHistoryDisplay.setVerticalAlignment(SwingConstants.TOP); // 위쪽 정렬
         moveHistoryDisplay.setHorizontalAlignment(SwingConstants.LEFT); // 왼쪽 정렬
         moveHistoryDisplay.setOpaque(true);
-        moveHistoryDisplay.setBackground(Color.MAGENTA); // JLabel 배경색 설정 (확인용)
+        moveHistoryDisplay.setBackground(new Color(255, 255, 204)); // JLabel 배경색 설정 (확인용)
 
         // JScrollPane에 JLabel 추가
         scrollPane = new JScrollPane(moveHistoryDisplay);
         scrollPane.setPreferredSize(new Dimension(400, 400)); // 패널의 기본 크기 설정
         scrollPane.setBorder(BorderFactory.createEmptyBorder()); // 테두리 제거
-        scrollPane.getViewport().setBackground(Color.MAGENTA); // JScrollPane 뷰포트 배경 설정
+        scrollPane.getViewport().setBackground(new Color(255, 255, 204)); // JScrollPane 뷰포트 배경 설정
 
         // MoveHistoryPanel 설정
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-        setBackground(Color.MAGENTA); // 패널 배경색 설정 (테스트용)
+        setBackground(new Color(255, 255, 204)); // 패널 배경색 설정 (테스트용)
     }
 
     // 기물 이동이 발생하면 외부에서 이 함수를 호출하여 JLabel을 갱신합니다.
@@ -101,3 +101,4 @@ public class MoveHistoryPanel extends JPanel {
         }
     }
 }
+

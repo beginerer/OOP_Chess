@@ -1,24 +1,6 @@
 package xyz.niflheim.stockfish.ui.board;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 public class VictoryPanel extends JPanel {
     private JLabel victoryLabel;
@@ -27,29 +9,21 @@ public class VictoryPanel extends JPanel {
     private Image backgroundImage;
 
     public VictoryPanel() {
-        // 배경 이미지 로드
-        try {
-            backgroundImage = ImageIO.read(new File("vb.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        backgroundImage = new ImageIcon(getClass().getResource("/image/vb.png")).getImage();
 
         setupPanel();
         addVictoryLabel();
         addInfoPanel();
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
+        // Draw the background image
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
-
     private void setupPanel() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 600)); // Set default size
         setMaximumSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(800, 600));
     }
@@ -63,7 +37,7 @@ public class VictoryPanel extends JPanel {
 
     private void addInfoPanel() {
         JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setOpaque(false); // 패널의 배경 투명하게 설정
+        centerPanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
 
         timeLabel = new JLabel("Time: ", SwingConstants.CENTER);
@@ -102,12 +76,9 @@ public class VictoryPanel extends JPanel {
     }
 
     public static void createAndShowGUI() {
-        JFrame frame = new JFrame("Result Screen");
+        JFrame frame = new JFrame("Result Screend");
         frame.setResizable(false);
         VictoryPanel victoryPanel = new VictoryPanel();
-
-        victoryPanel.setTime(154);
-        victoryPanel.setWinnerName("Player 1");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(victoryPanel);
@@ -120,4 +91,3 @@ public class VictoryPanel extends JPanel {
         SwingUtilities.invokeLater(VictoryPanel::createAndShowGUI);
     }
 }
-

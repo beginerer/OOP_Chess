@@ -15,6 +15,8 @@ import xyz.niflheim.stockfish.util.GameDTO;
 import xyz.niflheim.stockfish.util.Preference;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 
 public class BoardPanel extends JPanel implements BoardEventListener {
@@ -32,6 +34,11 @@ public class BoardPanel extends JPanel implements BoardEventListener {
     private JPanel boardPanel;
     private JPanel[][] squarePanels;
     private JLayeredPane boardLayeredPane;
+
+    private JPanel capturedPiecesPanel;
+    private JTextArea BLACKcapturedPiecesTextArea;
+    private JTextArea WHITEcapturedPiecesTextArea;
+
 
     private JPanel promotionPanel;  // 프로모션 패널
     private Square promotionSquare;
@@ -70,15 +77,90 @@ public class BoardPanel extends JPanel implements BoardEventListener {
         }
     }
 
+    // 죽은 말 표시 코드 - 영역 설정
+    JPanel initializeCapturedPiecesPanel() {
+        capturedPiecesPanel = new JPanel();
+        capturedPiecesPanel.setLayout(new BorderLayout());
+        capturedPiecesPanel.setPreferredSize(new Dimension(8 * SQUARE_DIMENSION, 100)); // 크기 확인
+        capturedPiecesPanel.setBackground(Color.LIGHT_GRAY);
+
+        // 경계선 스타일 설정
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+
+        // 상단 패널 (1사분면, 2사분면)
+        JPanel topPanel = new JPanel(new GridLayout(1, 2)); // 1행 2열의 GridLayout 설정
+        topPanel.setPreferredSize(new Dimension(8 * SQUARE_DIMENSION, 20)); // 높이 비율 1
+        topPanel.setBorder(border);
+
+        JLabel blackLabel = new JLabel("BLACK", JLabel.CENTER);
+        JLabel whiteLabel = new JLabel("WHITE", JLabel.CENTER);
+
+        topPanel.add(blackLabel);
+        topPanel.add(whiteLabel);
+
+        // 하단 패널 (3사분면, 4사분면)
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 2)); // 1행 2열의 GridLayout 설정
+        bottomPanel.setPreferredSize(new Dimension(8 * SQUARE_DIMENSION, 80)); // 높이 비율 4
+        bottomPanel.setBorder(border);
+
+        BLACKcapturedPiecesTextArea = new JTextArea();
+        BLACKcapturedPiecesTextArea.setEditable(false);
+        BLACKcapturedPiecesTextArea.setLineWrap(true);
+
+        WHITEcapturedPiecesTextArea = new JTextArea();
+        WHITEcapturedPiecesTextArea.setEditable(false);
+        WHITEcapturedPiecesTextArea.setLineWrap(true);
+
+        // 각 텍스트 영역에 경계선 추가
+        BLACKcapturedPiecesTextArea.setBorder(border);
+        WHITEcapturedPiecesTextArea.setBorder(border);
+
+        bottomPanel.add(BLACKcapturedPiecesTextArea);
+        bottomPanel.add(WHITEcapturedPiecesTextArea);
+
+        // 상단과 하단 패널을 capturedPiecesPanel에 추가
+        capturedPiecesPanel.add(topPanel, BorderLayout.NORTH);
+        capturedPiecesPanel.add(bottomPanel, BorderLayout.CENTER);
+
+        return capturedPiecesPanel;
+    }
+
+    //죽은 말 표시 코드
+    private void updateCapturedPiecesPanel(Piece capturedPiece) {
+
+        if(capturedPiece.getPieceSide()==Side.BLACK){
+            // 텍스트 영역에 캡처된 피스를 추가
+            BLACKcapturedPiecesTextArea.append(capturedPiece.getFanSymbol() + " ");
+            BLACKcapturedPiecesTextArea.setFont(BLACKcapturedPiecesTextArea.getFont().deriveFont(25f));
+            BLACKcapturedPiecesTextArea.revalidate();
+        }
+        else{
+            WHITEcapturedPiecesTextArea.append(capturedPiece.getFanSymbol() + " ");
+            WHITEcapturedPiecesTextArea.setFont(WHITEcapturedPiecesTextArea.getFont().deriveFont(25f));
+            WHITEcapturedPiecesTextArea.revalidate();
+        }
+
+    }
+
+
     public void processUserMove(Move move) {
+
+        // 죽은 말 표시 코드
+        Piece capturedPiece = board.getPiece(move.getTo()); // 이동 위치의 피스를 가져옴
+        // 피스를 캡처한 경우 텍스트 영역에 추가
+        if (capturedPiece != Piece.NONE) {
+            updateCapturedPiecesPanel(capturedPiece);
+        }
+
+
         Move userMove = move;
         removeLastMoveHighLight(lastMove);
         makeLastMoveHighlight(move.getTo());
         lastMove = move.getTo();
         board.doMove(userMove, true);
         if(isPVP && isUserTurn) {
-                isUserTurn = false; // 사용자 턴 종료
-                requestEngineMove(); // 엔진의 수 요청
+            isUserTurn = false; // 사용자 턴 종료
+            requestEngineMove(); // 엔진의 수 요청
         }
     }
     private void requestEngineMove() {
@@ -94,6 +176,12 @@ public class BoardPanel extends JPanel implements BoardEventListener {
         String from = bestMove.substring(0, 2).toUpperCase();
         String to = bestMove.substring(2, 4).toUpperCase();
         Move move = new Move(Square.valueOf(from), Square.valueOf(to));
+        // 죽은 말 표시 코드
+        Piece capturedPiece = board.getPiece(move.getTo()); // 이동 위치의 피스를 가져옴
+        // 피스를 캡처한 경우 텍스트 영역에 추가
+        if (capturedPiece != Piece.NONE) {
+            updateCapturedPiecesPanel(capturedPiece);
+        }
         makeLastMoveHighlight(move.getTo());
         try {
             Thread.sleep(1000);
