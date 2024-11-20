@@ -1,3 +1,6 @@
+컨트리뷰터 : 
+- 변주형
+- 
 
 <img src="https://github.com/user-attachments/assets/782afee0-051c-42dd-a2b2-7b03de783be9" width="812" height="648"/>
 
