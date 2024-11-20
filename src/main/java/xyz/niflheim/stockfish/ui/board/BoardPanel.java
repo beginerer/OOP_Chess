@@ -16,7 +16,6 @@ import xyz.niflheim.stockfish.util.Preference;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-
 import java.awt.*;
 
 public class BoardPanel extends JPanel implements BoardEventListener {
@@ -131,12 +130,12 @@ public class BoardPanel extends JPanel implements BoardEventListener {
         if(capturedPiece.getPieceSide()==Side.BLACK){
             // 텍스트 영역에 캡처된 피스를 추가
             BLACKcapturedPiecesTextArea.append(capturedPiece.getFanSymbol() + " ");
-            BLACKcapturedPiecesTextArea.setFont(BLACKcapturedPiecesTextArea.getFont().deriveFont(25f));
+            BLACKcapturedPiecesTextArea.setFont(BLACKcapturedPiecesTextArea.getFont().deriveFont(50f));
             BLACKcapturedPiecesTextArea.revalidate();
         }
         else{
             WHITEcapturedPiecesTextArea.append(capturedPiece.getFanSymbol() + " ");
-            WHITEcapturedPiecesTextArea.setFont(WHITEcapturedPiecesTextArea.getFont().deriveFont(25f));
+            WHITEcapturedPiecesTextArea.setFont(WHITEcapturedPiecesTextArea.getFont().deriveFont(50f));
             WHITEcapturedPiecesTextArea.revalidate();
         }
 
@@ -159,8 +158,8 @@ public class BoardPanel extends JPanel implements BoardEventListener {
         lastMove = move.getTo();
         board.doMove(userMove, true);
         if(isPVP && isUserTurn) {
-            isUserTurn = false; // 사용자 턴 종료
-            requestEngineMove(); // 엔진의 수 요청
+                isUserTurn = false; // 사용자 턴 종료
+                requestEngineMove(); // 엔진의 수 요청
         }
     }
     private void requestEngineMove() {
@@ -424,6 +423,10 @@ public class BoardPanel extends JPanel implements BoardEventListener {
 
     public MoveHistoryPanel getMoveHistoryPanel() {
         return moveHistoryPanel;
+    }
+
+    public boolean isWhiteTurn() {
+        return board.getSideToMove() == Side.WHITE;
     }
 
     @Override

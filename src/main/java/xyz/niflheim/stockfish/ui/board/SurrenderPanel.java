@@ -13,13 +13,13 @@ public class SurrenderPanel extends JPanel {
     }
 
     private void initializePanel() {
-        setLayout(new BorderLayout()); // BorderLayout으로 설정하여 버튼이 전체 패널을 채우도록 함
+        setLayout(new BorderLayout());
 
         surrenderButton = new JButton("Surrender");
-        surrenderButton.addActionListener(e -> gameFrame.showVictoryPanel());
-
-        // 패널 크기에 맞게 버튼을 추가
+        surrenderButton.addActionListener(e -> {
+            boolean isWhiteSurrendering = gameFrame.getBoardPanel().isWhiteTurn(); // 현재 차례가 흰색인지 확인
+            gameFrame.handleSurrender(isWhiteSurrendering);
+        });
         add(surrenderButton, BorderLayout.CENTER);
     }
 }
-

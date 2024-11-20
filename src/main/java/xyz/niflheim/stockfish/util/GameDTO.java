@@ -37,10 +37,10 @@ public class GameDTO {
         moveHistory = new MoveList(board.getFen());
         if(gameMode==GameMode.HUMAN_VS_MACHINE) {
             blackPlayer = preference.getUserName(); // 사용자 아이디
-            whitePlayer = "StockFishEngin";
+            whitePlayer = "StockFishEngine";
             boardReserved = true;
         }else if(gameMode==GameMode.MACHINE_VS_HUMAN) {
-            blackPlayer = "StockFishEngin";
+            blackPlayer = "StockFishEngine";
             whitePlayer = preference.getUserName(); // 사용자 아이디
         }else {
             blackPlayer = preference.getOpponent();

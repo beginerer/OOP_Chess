@@ -1,12 +1,10 @@
 package xyz.niflheim.stockfish.ui.launch;
 
-import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.game.Game;
 import com.github.bhlangonijr.chesslib.game.GameMode;
 import com.github.bhlangonijr.chesslib.game.Player;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
-import com.github.bhlangonijr.chesslib.pgn.GameLoader;
 import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
 import xyz.niflheim.stockfish.exceptions.StockfishInitException;
 import xyz.niflheim.stockfish.ui.board.BoardPanel;
@@ -20,9 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class LaunchFrame extends JFrame {
 

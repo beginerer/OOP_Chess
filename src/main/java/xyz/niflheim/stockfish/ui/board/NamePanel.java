@@ -2,7 +2,6 @@ package xyz.niflheim.stockfish.ui.board;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 
 public class NamePanel extends JPanel {
 

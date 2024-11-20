@@ -1,20 +1,18 @@
 package xyz.niflheim.stockfish.ui.board;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.*;
-
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.game.GameMode;
 import com.github.bhlangonijr.chesslib.move.Move;
 import com.github.bhlangonijr.chesslib.move.MoveList;
-
 import xyz.niflheim.stockfish.exceptions.StockfishInitException;
 import xyz.niflheim.stockfish.util.GameDTO;
 import xyz.niflheim.stockfish.util.Preference;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoveHistoryPanel extends JPanel {
 
@@ -101,4 +99,3 @@ public class MoveHistoryPanel extends JPanel {
         }
     }
 }
-

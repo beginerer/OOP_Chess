@@ -1,4 +1,5 @@
 package xyz.niflheim.stockfish.ui.board;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,23 +10,28 @@ public class VictoryPanel extends JPanel {
     private Image backgroundImage;
 
     public VictoryPanel() {
-        backgroundImage = new ImageIcon(getClass().getResource("/image/vb.png")).getImage();
+        try {
+            backgroundImage = new ImageIcon(getClass().getResource("/image/vb.png")).getImage();
+        } catch (Exception e) {
+            System.err.println("Background image not found: " + e.getMessage());
+            backgroundImage = null; // 이미지가 없을 경우를 대비
+        }
 
         setupPanel();
         addVictoryLabel();
         addInfoPanel();
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Draw the background image
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
     }
+
     private void setupPanel() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600)); // Set default size
-        setMaximumSize(new Dimension(800, 600));
-        setMinimumSize(new Dimension(800, 600));
     }
 
     private void addVictoryLabel() {
@@ -57,9 +63,11 @@ public class VictoryPanel extends JPanel {
         JButton closeButton = new JButton("닫기");
         closeButton.setFont(new Font("맑은 고딕", Font.BOLD, 16));
         closeButton.setPreferredSize(new Dimension(200, 60));
-        closeButton.addActionListener(e -> System.exit(0));
+        closeButton.addActionListener(e -> {
+                System.exit(0);
+        });
         gbc.gridy = 2;
-        gbc.insets = new Insets(250, 0, 50, 0);
+        gbc.insets = new Insets(20, 0, 20, 0);
         centerPanel.add(closeButton, gbc);
 
         add(centerPanel, BorderLayout.CENTER);
@@ -72,22 +80,6 @@ public class VictoryPanel extends JPanel {
     }
 
     public void setWinnerName(String playerName) {
-        playerNameLabel.setText("승리자 !  " + playerName);
-    }
-
-    public static void createAndShowGUI() {
-        JFrame frame = new JFrame("Result Screend");
-        frame.setResizable(false);
-        VictoryPanel victoryPanel = new VictoryPanel();
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(victoryPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(VictoryPanel::createAndShowGUI);
+        playerNameLabel.setText("승리자: " + playerName);
     }
 }

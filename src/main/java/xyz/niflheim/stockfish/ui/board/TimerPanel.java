@@ -3,7 +3,6 @@ package xyz.niflheim.stockfish.ui.board;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TimerPanel extends JPanel {
     private Timer timer;
@@ -20,12 +19,11 @@ public class TimerPanel extends JPanel {
         add(timeLabel, BorderLayout.CENTER);
 
         // Timer action listener
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        timer = new Timer(1000, (ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
                 seconds++;
                 timeLabel.setText(formatTime(seconds));
-            }
+            });
         });
 
         // Start the timer immediately
@@ -39,18 +37,7 @@ public class TimerPanel extends JPanel {
         return String.format("%02d:%02d:%02d", hrs, mins, secs);
     }
 
-    public TimerPanel getTimerPanel() {
-        return this;
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Timer Panel");
-        TimerPanel timerPanel = new TimerPanel();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(timerPanel);
-        frame.setSize(200, 150);
-        frame.setVisible(true);
+    public int getTotalSeconds() {
+        return seconds;
     }
 }
-
-

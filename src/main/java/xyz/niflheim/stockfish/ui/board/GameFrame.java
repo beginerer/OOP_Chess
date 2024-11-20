@@ -4,10 +4,10 @@ import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.game.GameMode;
 import xyz.niflheim.stockfish.engine.StockfishClient;
 import xyz.niflheim.stockfish.exceptions.StockfishInitException;
+import xyz.niflheim.stockfish.ui.launch.LaunchFrame;
 import xyz.niflheim.stockfish.util.Elo;
 import xyz.niflheim.stockfish.util.GameDTO;
 import xyz.niflheim.stockfish.util.Preference;
-import xyz.niflheim.stockfish.ui.launch.LaunchFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,16 +38,39 @@ public class GameFrame extends JFrame {
         moveHistoryPanel = boardPanel.getMoveHistoryPanel();
         capturePanel = boardPanel.initializeCapturedPiecesPanel();
         board = boardPanel.getBoard();
-        timerPanel = timerPanel.getTimerPanel();
-
+        
         whiteNamePanel = new NamePanel(gameDTO.getWhitePlayer(), gameDTO.getBlackPlayer(), true, gameDTO.isBoardReserved());
         blackNamePanel = new NamePanel(gameDTO.getWhitePlayer(), gameDTO.getBlackPlayer(), false, gameDTO.isBoardReserved());
         surrenderPanel = new SurrenderPanel(this); // GameFrame을 전달하여 항복 버튼에서 GameFrame 메서드를 호출할 수 있게 함
         victoryPanel = new VictoryPanel(); // VictoryPanel 초기화
 
         setBackground(Color.decode("#302E2B"));
+        initComponents();
         initFrame();
     }
+
+    private void initComponents() {
+        timerPanel = new TimerPanel();
+        moveHistoryPanel = boardPanel.getMoveHistoryPanel();
+        capturePanel = boardPanel.initializeCapturedPiecesPanel();
+
+        whiteNamePanel = new NamePanel(gameDTO.getWhitePlayer(), gameDTO.getBlackPlayer(), true, gameDTO.isBoardReserved());
+        blackNamePanel = new NamePanel(gameDTO.getWhitePlayer(), gameDTO.getBlackPlayer(), false, gameDTO.isBoardReserved());
+
+        surrenderPanel = new SurrenderPanel(this); // 항복 패널에 GameFrame 전달
+        victoryPanel = new VictoryPanel(); // VictoryPanel 초기화
+    }
+
+    public void handleSurrender(boolean isWhiteSurrendering) {
+        int totalSeconds = timerPanel.getTotalSeconds();
+        String winnerName = isWhiteSurrendering ? gameDTO.getBlackPlayer() : gameDTO.getWhitePlayer();
+
+        victoryPanel.setTime(totalSeconds);
+        victoryPanel.setWinnerName(winnerName);
+
+        showVictoryPanel();
+    }
+
 
     private void initFrame() {
         setTitle("OOP Chess Game");
